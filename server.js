@@ -1,11 +1,12 @@
 'use strict';
 
-require('dotenv').config();
+
 const express = require('express');
+require('dotenv').config();
 const cors = require('cors');
+
+
 const mongoose = require('mongoose');
-
-
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
