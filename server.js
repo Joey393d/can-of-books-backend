@@ -20,6 +20,8 @@ mongoose.connect(process.env.MONGODB_URL);
 const Book = require('./models/book');
 
 const app = express();
+
+
 app.use(cors());
 
 
@@ -27,13 +29,12 @@ app.get('/books', async (req, res) => {
   const location = req.query.location;
 
   const findQuery = {};
-  if (location) {
-    findQuery.location = location;
-  }
+  
   const books = await Book.find(findQuery);
 
   res.send(books);
 
+  console.log(books);
 })
 
 
@@ -41,11 +42,7 @@ app.get('/books', async (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 
-app.get('/test', (request, response) => {
 
-  response.send('test request received')
-
-})
 
 if (!parseInt(PORT)) throw 'Invalid PORT';
 
