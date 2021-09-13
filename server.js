@@ -3,6 +3,10 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+
+
+var db = mongoose.connection;
 
 const app = express();
 app.use(cors());
@@ -15,4 +19,7 @@ app.get('/test', (request, response) => {
 
 })
 
-app.listen(PORT, () => console.log(`listening on ${PORT}`));
+if (!parseInt(PORT)) throw 'Invalid PORT';
+
+
+app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}`));
