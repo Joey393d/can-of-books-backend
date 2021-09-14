@@ -10,7 +10,8 @@ const Book = require('./models/book');
 
 async function seed() {
   
-
+console.log('deleting previous books')
+await Book.deleteMany({});
 
 
 
@@ -20,7 +21,7 @@ async function seed() {
   status: 'Completed',
   email: 'joeyyoung97@gmail.com',
 })
-myBook.save();
+await myBook.save();
 
 
 const theBook = new Book({
@@ -29,7 +30,7 @@ const theBook = new Book({
   status: 'Completed',
   email: 'joeyyoung97@gmail.com',
 })
-theBook.save();
+await theBook.save();
 
 
 
@@ -39,7 +40,14 @@ const mostlyDead = new Book({
   status: 'Completed',
   email: 'joeyyoung97@gmail.com',
 })
-mostlyDead.save();
+
+await mostlyDead.save();
+
+
+await Book.create({
+  name: 'Mostly Dead things',
+  description: 'What does it take to come back to life? For Jessa-Lynn Morton, the question is not an abstract one. In the wake of her father’s suicide, Jessa has stepped up to manage his failing taxidermy business while the rest of the Morton family crumbles.'
+})
 
   mongoose.disconnect();
 
