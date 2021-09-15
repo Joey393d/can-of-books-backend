@@ -41,6 +41,8 @@ app.get('/books', async (req, res) => {
 })
 
 app.post('/books', postBooks);
+app.delete('/books/:id', deleteBook)
+app.put('/books/:id', putBook)
 
 
 
@@ -67,9 +69,33 @@ async function postBooks(req, res) {
   }
 }
 
-async function deleteBook(req, res) {
-  // value from route /cats/:id
+
+
+
+async function putBook(req, res) {
+
   let id = req.params.id;
+  let bookUpdate = req.body;
+
+  let options = {
+    new: true,
+    overwrite: true,
+  }
+
+  try {
+    let updatedBook = await Book.findByIdAndUpdate(id, bookUpdate, options);
+    res.send(updatedBook);
+  } catch(err) {
+    handleError(err, res);
+  }
+}
+
+
+
+async function deleteBook(req, res) {
+  
+  let id = req.params.id;
+  
 
   try {
     await Book.findByIdAndDelete(id);
