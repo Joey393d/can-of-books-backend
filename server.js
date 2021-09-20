@@ -1,8 +1,32 @@
-
-
-
 const express = require('express');
 require('dotenv').config();
+
+
+
+const jwt = require('jsonwebtoken');
+const jwksClient = require('jwks-rsa');
+
+const client = jwksClient({
+  
+  jwksUri: 'https://dev-txxoephp.us.auth0.com/.well-known/jwks.json',
+});
+
+const { promisify } = require('util');
+
+const verify = promisify(jwt.verify);
+
+
+
+async function verifyUser(authorization) {
+  if (!authorization) return null;
+  let token = authorization.split(' ')[1];
+
+  return await verify(token, getKey, {});
+}
+
+
+
+
 
 
 
@@ -38,6 +62,15 @@ app.get('/books', async (req, res) => {
   const books = await Book.find(findQuery);
 
   res.send(books);
+
+  const { authorization } = req.headers;
+
+  
+  let user = await verifyUser(authorization);
+  if (!user) {
+    res.sendStatus(401);
+    return;
+  }
 })
 
 app.post('/books', postBooks);
